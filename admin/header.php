@@ -43,7 +43,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <i class="fas fa-search"></i>
         </a>
         <div class="navbar-search-block">
-          <form class="form-inline" method="post" action="<?php echo $page == 'index.php'? 'index.php' : 'user_list.php'; ?>">
+          <form class="form-inline" method="post" action="<?php echo $page == 'index.php' ? 'index.php':'user_list.php'; ?>">
             <div class="input-group input-group-sm">
               <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">

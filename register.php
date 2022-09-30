@@ -18,12 +18,13 @@ require 'config/config.php';
     echo "<script>alert('Email Duplicated')</script>";
   }else{
     
-     $stmt = $pdo->prepare("INSERT INTO users(name,email,password) VALUES (:name,:email,:password)");
+     $stmt = $pdo->prepare("INSERT INTO users(name,email,password,role) VALUES (:name,:email,:password,:role)");
      $result = $stmt->execute(
          array(
              ':name'=>$name, 
              ':email'=> $email, 
-             ':password'=>$password
+             ':password'=>$password,
+             ':role' => 0
          )
      );
 

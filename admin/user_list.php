@@ -7,18 +7,25 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
     header('Location: login.php');
   }
   
-/*   if ($_SESSION['role'] != 1) {
+if ($_SESSION['role'] != 1) {
     header('Location: login.php');
-  } */
-  
+  } 
+
+  if ($_POST['search']) {
+    setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
+  }else{
+    if (empty($_GET['pageno'])) {
+      unset($_COOKIE['search']); 
+      setcookie('search', null, -1, '/'); 
+    }
+  }
+//print_r($_POST);
 ?>
 
 <?php
   include ('header.php');
 ?>
-
-
-    <!-- Main content -->
+<!-- Main content -->
     <div class="content">
       <div class="container-fluid">
         <div class="row">
@@ -34,10 +41,10 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
                   $pageno = 1;
                 }
 
-                $numOfrecs = 5;
+                $numOfrecs = 3;
                 $offset = ($pageno - 1 )* $numOfrecs;
-
-               if(empty($_POST['search'])){
+                
+                if (empty($_POST['search']) && empty($_COOKIE['search'])) {
 
                 $stmt = $pdo->prepare("SELECT * FROM users ORDER BY id DESC");
                 $stmt -> execute();
@@ -48,9 +55,9 @@ if (empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
                 $stmt = $pdo->prepare("SELECT * FROM users ORDER BY id DESC LIMIT $offset, $numOfrecs ");
                 $stmt -> execute();
                 $result = $stmt->fetchAll();
-
+                
                }else{
-                $searchKey = $_POST['search'];
+                $searchKey = $_POST['search'] ? $_POST['search'] : $_COOKIE['search'];
                 $stmt = $pdo->prepare("SELECT * FROM users WHERE name LIKE '%$searchKey%' ORDER BY id DESC");
                 $stmt -> execute();
                 $rawResult = $stmt->fetchAll();
