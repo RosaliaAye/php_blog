@@ -29,7 +29,15 @@ if($_POST) {
     if($user) {
         echo "<script> alert('Email Duplicated');</script>";
     }else{
-    $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
+    if ($password != null) {
+        $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'");
+    }else{
+        $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',role='$role' WHERE id='$id'");
+    }
+    
+  /*   else{
+    $stmt = $pdo->prepare("UPDATE users SET name='$name',email='$email',password='$password',role='$role' WHERE id='$id'"); */
+
     $result = $stmt->execute();
   
     if($result) {
